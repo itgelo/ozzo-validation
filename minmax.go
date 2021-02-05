@@ -26,6 +26,7 @@ type ThresholdRule struct {
 	threshold interface{}
 	operator  int
 	err       Error
+	force     bool
 }
 
 const (
@@ -77,7 +78,7 @@ func (r ThresholdRule) Exclusive() ThresholdRule {
 // Validate checks if the given value is valid or not.
 func (r ThresholdRule) Validate(value interface{}) error {
 	value, isNil := Indirect(value)
-	if isNil || IsEmpty(value) {
+	if isNil || IsEmpty(value) && !r.force {
 		return nil
 	}
 
@@ -139,6 +140,12 @@ func (r ThresholdRule) Error(message string) ThresholdRule {
 // ErrorObject sets the error struct for the rule.
 func (r ThresholdRule) ErrorObject(err Error) ThresholdRule {
 	r.err = err
+	return r
+}
+
+// ForceValidateEmpty force validation even when data is empty.
+func (r ThresholdRule) ForceValidateEmpty() ThresholdRule {
+	r.force = true
 	return r
 }
 

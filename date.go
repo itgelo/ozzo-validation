@@ -20,6 +20,7 @@ type DateRule struct {
 	layout        string
 	min, max      time.Time
 	err, rangeErr Error
+	force         bool
 }
 
 // Date returns a validation rule that checks if a string value is in a format that can be parsed into a date.
@@ -80,7 +81,7 @@ func (r DateRule) Max(max time.Time) DateRule {
 // Validate checks if the given value is a valid date.
 func (r DateRule) Validate(value interface{}) error {
 	value, isNil := Indirect(value)
-	if isNil || IsEmpty(value) {
+	if isNil || IsEmpty(value) && !r.force {
 		return nil
 	}
 
@@ -99,4 +100,10 @@ func (r DateRule) Validate(value interface{}) error {
 	}
 
 	return nil
+}
+
+// ForceValidateEmpty force validation even when data is empty.
+func (r DateRule) ForceValidateEmpty() DateRule {
+	r.force = true
+	return r
 }

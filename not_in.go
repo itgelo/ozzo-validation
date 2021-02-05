@@ -21,12 +21,13 @@ func NotIn(values ...interface{}) NotInRule {
 type NotInRule struct {
 	elements []interface{}
 	err      Error
+	force    bool
 }
 
 // Validate checks if the given value is valid or not.
 func (r NotInRule) Validate(value interface{}) error {
 	value, isNil := Indirect(value)
-	if isNil || IsEmpty(value) {
+	if isNil || IsEmpty(value) && !r.force {
 		return nil
 	}
 
@@ -47,5 +48,11 @@ func (r NotInRule) Error(message string) NotInRule {
 // ErrorObject sets the error struct for the rule.
 func (r NotInRule) ErrorObject(err Error) NotInRule {
 	r.err = err
+	return r
+}
+
+// ForceValidateEmpty force validation even when data is empty.
+func (r NotInRule) ForceValidateEmpty() NotInRule {
+	r.force = true
 	return r
 }

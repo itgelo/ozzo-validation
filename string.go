@@ -10,6 +10,7 @@ type stringValidator func(string) bool
 type StringRule struct {
 	validate stringValidator
 	err      Error
+	force    bool
 }
 
 // NewStringRule creates a new validation rule using a function that takes a string value and returns a bool.
@@ -47,7 +48,7 @@ func (r StringRule) ErrorObject(err Error) StringRule {
 // Validate checks if the given value is valid or not.
 func (r StringRule) Validate(value interface{}) error {
 	value, isNil := Indirect(value)
-	if isNil || IsEmpty(value) {
+	if isNil || IsEmpty(value) && !r.force {
 		return nil
 	}
 
@@ -61,4 +62,10 @@ func (r StringRule) Validate(value interface{}) error {
 	}
 
 	return r.err
+}
+
+// ForceValidateEmpty force validation even when data is empty.
+func (r StringRule) ForceValidateEmpty() StringRule {
+	r.force = true
+	return r
 }

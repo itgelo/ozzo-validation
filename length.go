@@ -47,12 +47,13 @@ type LengthRule struct {
 
 	min, max int
 	rune     bool
+	force    bool
 }
 
 // Validate checks if the given value is valid or not.
 func (r LengthRule) Validate(value interface{}) error {
 	value, isNil := Indirect(value)
-	if isNil || IsEmpty(value) {
+	if isNil || IsEmpty(value) && !r.force {
 		return nil
 	}
 
@@ -82,6 +83,12 @@ func (r LengthRule) Error(message string) LengthRule {
 // ErrorObject sets the error struct for the rule.
 func (r LengthRule) ErrorObject(err Error) LengthRule {
 	r.err = err
+	return r
+}
+
+// ForceValidateEmpty force validation even when data is empty.
+func (r LengthRule) ForceValidateEmpty() LengthRule {
+	r.force = true
 	return r
 }
 

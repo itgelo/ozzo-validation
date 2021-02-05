@@ -26,12 +26,13 @@ func In(values ...interface{}) InRule {
 type InRule struct {
 	elements []interface{}
 	err      Error
+	force    bool
 }
 
 // Validate checks if the given value is valid or not.
 func (r InRule) Validate(value interface{}) error {
 	value, isNil := Indirect(value)
-	if isNil || IsEmpty(value) {
+	if isNil || IsEmpty(value) && !r.force {
 		return nil
 	}
 
@@ -53,5 +54,11 @@ func (r InRule) Error(message string) InRule {
 // ErrorObject sets the error struct for the rule.
 func (r InRule) ErrorObject(err Error) InRule {
 	r.err = err
+	return r
+}
+
+// ForceValidateEmpty force validation even when data is empty.
+func (r InRule) ForceValidateEmpty() InRule {
+	r.force = true
 	return r
 }
