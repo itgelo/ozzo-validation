@@ -31,9 +31,9 @@ func TestMap(t *testing.T) {
 		{"t2.4", m1, []*KeyRules{Key("D", Length(0, 5))}, ""},
 		{"t2.5", m1, []*KeyRules{Key("F", Length(0, 5))}, ""},
 		{"t2.6", m1, []*KeyRules{Key("H", Each(&validateAbc{})), Key("I", Each(&validateAbc{}))}, ""},
-		{"t2.7", m1, []*KeyRules{Key("H", Each(&validateXyz{})), Key("I", Each(&validateXyz{}))}, "H: (0: error xyz; 1: error xyz.); I: (foo: error xyz.)."},
+		{"t2.7", m1, []*KeyRules{Key("H", Each(&validateXyz{})), Key("I", Each(&validateXyz{}))}, "H: 0: error xyz; 1: error xyz.; I: foo: error xyz.."},
 		{"t2.8", m1, []*KeyRules{Key("I", Map(Key("foo", &validateAbc{})))}, ""},
-		{"t2.9", m1, []*KeyRules{Key("I", Map(Key("foo", &validateXyz{})))}, "I: (foo: error xyz.)."},
+		{"t2.9", m1, []*KeyRules{Key("I", Map(Key("foo", &validateXyz{})))}, "I: foo: error xyz.."},
 		// non-map value
 		{"t3.1", &m1, []*KeyRules{}, ""},
 		{"t3.2", nil, []*KeyRules{}, ErrNotMap.Error()},

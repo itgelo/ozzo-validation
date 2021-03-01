@@ -56,7 +56,7 @@ func TestValidate(t *testing.T) {
 
 	// with rules
 	err := Validate("123", &validateAbc{}, &validateXyz{})
-	assert.EqualError(t, err, "error abc")
+	assert.EqualError(t, err, "error abc,error xyz")
 	err = Validate("abc", &validateAbc{}, &validateXyz{})
 	assert.EqualError(t, err, "error xyz")
 	err = Validate("abcxyz", &validateAbc{}, &validateXyz{})
@@ -73,7 +73,7 @@ func TestValidate(t *testing.T) {
 	assert.NoError(t, err)
 
 	err = Validate("123", &validateAbc{}, Skip.When(false), &validateXyz{})
-	assert.EqualError(t, err, "error abc")
+	assert.EqualError(t, err, "error abc,error xyz")
 	err = Validate("abc", &validateAbc{}, Skip.When(false), &validateXyz{})
 	assert.EqualError(t, err, "error xyz")
 }

@@ -1,4 +1,4 @@
-module github.com/itgelo/ozzo-validation
+module github.com/itgelo/ozzo-validation/v4
 
 go 1.13
 

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/itgelo/ozzo-validation"
-	"github.com/itgelo/ozzo-validation/is"
+	validation "github.com/itgelo/ozzo-validation/v4"
+	"github.com/itgelo/ozzo-validation/v4/is"
 )
 
 type Address struct {
@@ -188,5 +188,5 @@ func Example_seven() {
 	)
 	fmt.Println(err)
 	// Output:
-	// Address: (State: must be in a valid format; Street: the length must be between 5 and 50.); Email: must be a valid email address.
+	// Address: State: must be in a valid format; Street: the length must be between 5 and 50.; Email: must be a valid email address.
 }
